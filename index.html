@@ -1,0 +1,101 @@
+<head>
+<!-- modules and systems I'm including in my code -->
+    <!-- I've always been fond of jQuery to simplify the JS -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <!-- Bootstrap is great for display and offscreen elements -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+    <!-- Finally, FontAwesome gives me a lot of simple icons to work with -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<!-- these modules are all relatively low overhead -->
+
+<!-- stuff I wrote -->
+    <!-- the terrain list -->
+<script src='./src/terrain.js'></script>
+    <!-- hex geometry and such -->
+<script src='./src/hexDefinitions.js'></script>
+    <!-- essential CSS -->
+<link rel="stylesheet" href="./src/hex.css" />
+<!-- NOT USING THIS <link rel="stylesheet" href="./src/allHexes.css"> -->
+    <!-- where the bulk of the code lives -->
+<script src='./src/hex.js'></script>
+</head>
+
+<body>
+<!-- The only two elements currents used with dynamic generation -->
+<canvas id="hexCanvas"></canvas>
+<div id="hexGrid"></div>
+
+<!-- Buttons in a pull out tab -->
+<div class="offcanvas offcanvas-end" id="sidebar">
+    <div class="outer-container">
+        <select name="Terrain" id="selectTerrain"></select>
+        <button class="btn btn-primary" id='btnChangeTerrain'>Change Terrain</button>
+        <button class="btn btn-primary" id="btnLogSelectionGroup">Log Selections</button>
+        <button class="btn btn-primary" id="btnLogHexGrid">Return the full JSON;</button>
+        <button class="btn btn-primary" id="testButton">TEST FUNCTIONS</button>
+        <button type="button" class="btn btn-primary" id="btnSelectNone">Select None</button>
+    </div>
+    <div class="outer-container">
+        <img src="assets/neighbor3.png" neighbors=3 class="imageButton">
+        <img src="assets/neighbor2.png" neighbors=2 class="imageButton">
+        <img src="assets/neighbor1.png" neighbors=1 class="imageButton">
+        <img src="assets/neighbor0.png" neighbors=0 class="imageButton selectionShapeSelect ">
+    </div>
+    <div class="outer-container">
+        <div class="outer-container">
+            <img src="assets/neighbor0.png" class="imageButton" mapAction="select">
+            <i class="fas fa-plus fa-inplace passthrough"></i>
+        </div>
+        <div class="outer-container">
+            <img src="assets/neighbor0.png" class="imageButton selectionActionSelect" mapAction="toggle">
+            <i class="fas fa-plus-minus fa-inplace passthrough"></i>
+        </div>
+        <div class="outer-container">
+            <img src="assets/neighbor0.png" class="imageButton" mapAction="unselect">
+            <i class="fas fa-minus fa-inplace passthrough"></i>
+        </div>
+    </div>
+    <div class="outer-container">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="showCoordinates" checked>
+            <label class="form-check-label" for="showCoordinates">
+            Show coordinates
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="showTerrainImages" checked>
+            <label class="form-check-label" for="showTerrainImages">
+            Show terrain images
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="showTerrainColors" checked>
+            <label class="form-check-label" for="showTerrainColors">
+            Show terrain colors
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="showGridlines" checked>
+            <label class="form-check-label" for="showGridlines">
+            Show gridlines
+            </label>
+        </div>
+    </div>
+    <div class="outer-container">
+        <div class="form-check form-switch">
+            <input class="form-check-input" checked type="checkbox" role="switch" id="lightDarkGridlines">
+            <label class="form-check-label" for="lightDarkBorderToggle">White / Black gridline</label>
+        </div>
+    </div>
+</div>
+
+    <!-- The button that opens it -->
+<div class="offcanvas-content">
+    <div class="toggle-button-wrapper" style="z-index: 10">
+        <button class="btn btn-primary d-inline-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+            &nbsp<i class="fas fa-chevron-left fa-lg"></i>&nbsp
+        </button>
+    </div>
+</div>
+</body>
