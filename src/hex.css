@@ -84,6 +84,12 @@ body {
     display: inline-block;
 }
 
+.inner-container {
+    padding: 0px;
+    position: relative;
+    display: inline-block;    
+}
+
 .fa-inplace {
     position: absolute;
     top: 50%;

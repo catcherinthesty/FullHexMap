@@ -12,11 +12,15 @@
 <!-- stuff I wrote -->
     <!-- the terrain list -->
 <script src='./src/terrain.js'></script>
+    <script>console.log(TERRAIN_TYPES);</script>
     <!-- hex geometry and such -->
 <script src='./src/hexDefinitions.js'></script>
     <!-- essential CSS -->
 <link rel="stylesheet" href="./src/hex.css" />
 <!-- NOT USING THIS <link rel="stylesheet" href="./src/allHexes.css"> -->
+    <!-- where some code lives -->
+<script src='./src/testData.js'></script>
+<script src="./src/hexDefinitions.js"></script>
     <!-- where the bulk of the code lives -->
 <script src='./src/hex.js'></script>
 </head>
@@ -43,17 +47,21 @@
         <img src="assets/neighbor0.png" neighbors=0 class="imageButton selectionShapeSelect ">
     </div>
     <div class="outer-container">
-        <div class="outer-container">
+        <div class="inner-container">
             <img src="assets/neighbor0.png" class="imageButton" mapAction="select">
             <i class="fas fa-plus fa-inplace passthrough"></i>
         </div>
-        <div class="outer-container">
+        <div class="inner-container">
             <img src="assets/neighbor0.png" class="imageButton selectionActionSelect" mapAction="toggle">
             <i class="fas fa-plus-minus fa-inplace passthrough"></i>
         </div>
-        <div class="outer-container">
+        <div class="inner-container">
             <img src="assets/neighbor0.png" class="imageButton" mapAction="unselect">
             <i class="fas fa-minus fa-inplace passthrough"></i>
+        </div>
+        <div class="inner-container">
+            <img src="assets/neighbor0.png" class="imageButton" mapAction="information">
+            <i class="fas fa-magnifying-glass fa-inplace passthrough"></i>
         </div>
     </div>
     <div class="outer-container">
