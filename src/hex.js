@@ -187,14 +187,11 @@ function drawHexGrid(gridArray, originX = 0, originY = 0) {
             // DEBUG ? console.log(tile) : null
             if(!tile) {
                 var terrain = TERRAIN_TYPES['blank'];
-            } else if('specialTerrain' in tile) {
-                var terrain = specialTerrain;
             } else {
-                var currentHexTerrain = tile.terrain;
-                var terrain = TERRAIN_TYPES[currentHexTerrain];
-            }
+                var terrain = checkSpecialTerrain(tile);
             currentCoords = [col,row];
             buildHex(currentHexX, currentHexY, terrain, currentCoords);
+            }
         }
         offsetColumn = !offsetColumn;
     }
@@ -206,9 +203,7 @@ function drawHexGrid(gridArray, originX = 0, originY = 0) {
         allHexContainers.attr('draggable','false');
     }
     $hexesAreBuilt=true;
-//    hexClickEvent(event);
-//    });
-};
+}
 
 function buildHex(drawHexX, drawHexY, hexTerrain, currentCoords) {
     $colorBackground || $drawHexBorders ? drawHex(drawHexX, drawHexY, hexTerrain) : null;
@@ -231,10 +226,18 @@ function buildHex(drawHexX, drawHexY, hexTerrain, currentCoords) {
         }
     }
     addOverlay(currentCoords[0],currentCoords[1],
-        drawHexX,drawHexY)
-    // drawImage(currentCoords[0],currentCoords[1],'blank',drawHexX,drawHexY);
-    // This is an attempt to include tiles, but we have issues with image size that are a blocker to this.
-};
+        drawHexX,drawHexY);
+}
+
+function checkSpecialTerrain(tile) {
+    if('specialTerrain' in tile) {
+        return tile.specialTerrain;
+    } else {
+        var currentHexTerrain = tile.terrain;
+        return TERRAIN_TYPES[currentHexTerrain];
+    }
+    return null;
+}
 
 function drawCoordinates(currentCoords,drawHexX,drawHexY) {
     CANVAS_CONTEXT.font = $coordinatesFont;
