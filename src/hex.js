@@ -155,7 +155,6 @@ $('input').on('change', function(){
 
 drawHexGrid($currentHexGrid,20,20);
 
-
 /* ### FUNCTIONS TO DRAW HEX GRIDS AND THEIR COMPONENTS ### */
 function drawHexGrid(gridArray, originX = 0, originY = 0) {
     let rows = gridArray.rows;
@@ -196,38 +195,80 @@ function drawHexGrid(gridArray, originX = 0, originY = 0) {
         offsetColumn = !offsetColumn;
     }
     allHexContainers = $('.hex');
+    allSelectionLayer = $('.overlay');
     if(!$hexesAreBuilt) {
-        allHexContainers.on('click',function (event) {
-            hexClickEvent(event,this);
-        });
-        allHexContainers.attr('draggable','false');
+        updateListeners()
     }
     $hexesAreBuilt=true;
 }
 
+function updateListeners() {
+    // ### EVENT LISTENERS FOR HEXES ### //
+    allHexContainers.on('click',function (event) {
+        hexClickEvent(event,this);
+    });
+    allHexContainers.attr('draggable','false');
+    allHexContainers.on('contextmenu', function(event) {
+        event.preventDefault();
+        // For custom context menu action.
+    });
+    var lastOverTime = 0;
+    allHexContainers.on('mousemove', function(event) {
+        let currentTime = Date.now();
+        let timeDiff = currentTime - lastOverTime;
+        if (timeDiff >= 20) {
+            hex = event.target;
+            lastOverTime = currentTime;
+            mouseover(getActualClick(event,hex));
+        }
+    });
+    allHexContainers.on('mousedown', function(event) {
+        event.preventDefault();
+    });        
+}
+
+
 function buildHex(drawHexX, drawHexY, hexTerrain, currentCoords) {
     $colorBackground || $drawHexBorders ? drawHex(drawHexX, drawHexY, hexTerrain) : null;
     $displayCoords ? drawCoordinates(currentCoords,drawHexX,drawHexY) : null;
+    let x = currentCoords[0];
+    let y = currentCoords[1];
+    let image = hexTerrain.image;
+    let name = hexTerrain.name;
+    let description = hexTerrain.description;
     if($hexesAreBuilt) {
         if($displayImage) {
-           $(`#hex_${currentCoords[0]}_${currentCoords[1]}`)
-               .attr('src',TERRAIN_DIR + hexTerrain.image + IMAGE_EXT);
+           $(`#hex_${x}_${y}`)
+               .attr('src',TERRAIN_DIR + image + IMAGE_EXT);
         } else {
-            $(`#hex_${currentCoords[0]}_${currentCoords[1]}`)
+            $(`#hex_${x}_${y}`)
                 .attr('src',TERRAIN_DIR + 'blank' + IMAGE_EXT);
         }
     } else {
         if($displayImage) {
-            drawImage(currentCoords[0],currentCoords[1],
-            hexTerrain.image,drawHexX,drawHexY)
+            drawImage(x,y,image,drawHexX,drawHexY)
         } else {
-            drawImage(currentCoords[0],currentCoords[1],
-            'blank',drawHexX,drawHexY)
+            drawImage(x,y,'blank',drawHexX,drawHexY)
         }
     }
-    addOverlay(currentCoords[0],currentCoords[1],
-        drawHexX,drawHexY);
+    addOverlay(x,y,drawHexX,drawHexY);
+//    addPopover(x,y,name,description)
 }
+    
+//    function addPopover(x,y,name,description) {
+//        theTile = $('#hex_' + x + '_' + y);
+//        theTile.attr('data-toggle',"popover")
+//        theTile.attr('title',name)
+//        theTile.attr('data-content',description)
+//        theTile.attr('data-placement','top');
+//        theTile.attr('data-trigger','focus')
+//    }
+//
+//    var $everyPopover = $('[data-toggle="popover"]');
+//
+//    function closePopovers() {
+//        $everyPopover.popover('hide');
+//    }
 
 function checkSpecialTerrain(tile) {
     if('specialTerrain' in tile) {
@@ -303,15 +344,23 @@ function addOverlay (x,y,xOff,yOff){
         .css('height',HEX_HEIGHT);
 };
 
-/* ### Click handlers ### */
-function hexClickEvent(event,hex) {
-    // $selectAction should be 'select', 'toggle' or 'unselect'
+function getActualClick (event,hex) {
     let coordinates = hex.id.split("_").slice(1,3);
     let direction = hexOffset(event);
     let oddOrEven = hex.id.split("_")[1]%2 == 0 ? "even" : "odd"
     let actualClick =addHexes(DIRECTIONAL_NEIGHBORS[oddOrEven][direction],coordinates)
     if(!hexIsInBounds(actualClick)) {
         return null;
+    }
+    return actualClick;
+}
+
+/* ### Click handlers ### */
+function hexClickEvent(event,hex) {
+    // $selectAction should be 'select', 'toggle' or 'unselect'
+    let actualClick = getActualClick(event,hex);
+    if(getActualClick == null) {
+        return null
     }
     clickAndNeighbors = getHexNeighbors(actualClick);
     switch($('.selectionActionSelect').attr('mapAction')) {
@@ -333,7 +382,22 @@ function hexClickEvent(event,hex) {
                 unSelectHex(t.join('_'));
             }
             break;
+        case "information":
+            getInfo(actualClick);
     }
+}
+
+function getInfo(coordinates) {
+    x = coordinates[0];
+    y = coordinates[1];
+    $currentHexGrid.tiles.find((entry) => {
+        if(entry.x == x && entry.y == y) {
+            entry = checkSpecialTerrain(entry);
+            d = entry.description;
+            n = entry.name;
+            $('#hex_' + coordinates.join('_')).popover('show');
+        }
+    });
 }
 
 var $selectNeighbors = $('.selectionShapeSelect').attr('neighbors');
@@ -408,6 +472,7 @@ function getHexNeighbors(centralHex) {
     return neighbors;
 }
 
+
 /* Utility Functions */
 function hexEquality(hex1,hex2) {
     hex1 = hex1.join('_');
@@ -474,6 +539,29 @@ function unSelectHex (selectedHex) {
     $('#sel_' + selectedHex).removeClass('selection');
 }
 
+mouseoverTarget = [];
+function mouseover(xy) {
+    if (xy == null || xy.length == undefined) {
+        return false;
+    } else if (mouseoverTarget.toString() == xy.toString()) {
+        return true;
+    } else {
+        unmouseover();
+        var target = [xy];
+        for (t of getHexNeighbors(xy)) {
+            target.push(t);
+        }
+    }
+    for (t of target) {
+        // DEBUG ? console.log(t) : null
+        $('#sel_' + t.join('_')).addClass('mouseover');
+    }
+    mouseoverTarget = xy;
+}
+
+function unmouseover() {
+    allSelectionLayer.removeClass('mouseover');
+}
 
 
 });

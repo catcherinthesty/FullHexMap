@@ -27,13 +27,6 @@ const TERRAIN_TYPES = {
         types: ['blank'],
         description: "Undefined or unknown, there is no terrain here.",
     },
-    broken_lands: {
-        name: "Broken Lands",
-        image: 'broken_lands',
-        color: '#C3AE7D',
-        types: ['desolate'],
-        description: "Landscape scattered with irregular fragmented formations of stone and sun baked clay.",
-    },
     dense_evergreen_forest: {
         name: "Dense Evergreen Forest",
         image: 'dense_evergreen_forest',
@@ -86,7 +79,7 @@ const TERRAIN_TYPES = {
     desert_mesa: {
         name: "Desert Mesa",
         image: "mesa",
-        color: "#F9A940",
+        color: "#CAA968",
         types: ['desert','mountains'],
         description: "A stone and clay mountain, towering above the arid sands of the desert.",
     },
@@ -121,7 +114,7 @@ const TERRAIN_TYPES = {
     forested_evergreen_hills: {
         name: "Forested Evergreen Hills",
         image: 'forested_evergreen_hills',
-        color: '#007000',
+        color: '#007020',
         types: ['forest','hills'],
         description: "Hilly expanses dominated by evergreen forests.",
     },
@@ -163,7 +156,7 @@ const TERRAIN_TYPES = {
     grassy_hills: {
         name: "Grassy Hills",
         image: 'grassy_hills',
-        color: '#AA5431',
+        color: '#8AA431',
         types: ['grassland','hills'],
         description: "Rolling hills covered in lush grasses.",
     },
@@ -233,7 +226,7 @@ const TERRAIN_TYPES = {
     mixed_forested_hills: {
         name: "Mixed Forested Hills",
         image: 'mixed_forested_hills',
-        color: '#005E3E',
+        color: '#408E5E',
         types: ['forest','hills'],
         description: "Hilly terrain featuring a variety of deciduous and evergreen trees.",
     },
@@ -300,16 +293,9 @@ const TERRAIN_TYPES = {
         types: ['forest','wetland'],
         description: "Waterlogged wetland of dense vegetation, with generous swathes of willow and mangrove trees.",
     },
-    volcano_active: {
-        name: "Active Volcano",
-        image: 'volcano_active',
-        color: '#FF4500',
-        types: ['mountains','volcano'],
-        description: "A smoldering magma caldera, resting in the crater atop a mountain.",
-    },
     volcano_dormant: {
         name: "Dormant Volcano",
-        image: 'volcano_dormant',
+        image: 'volcano',
         color: '#8F8F8F',
         types: ['mountains','volcano'],
         description: "A previously active caldera, now but a stony bowl atop a once-terrifying titanic volcano."
