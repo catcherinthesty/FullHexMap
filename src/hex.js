@@ -1,130 +1,10 @@
 $(document).ready(function(){
 // CONSTANTS are expressed in a all uppercase //
 
-// List of all neighbors out to 3 degrees for use with the hexAdd() function
-// Even and odd X have different neighbors. No need to overthink this.
-const ISOLATED_ODD_NEIGHBORS = {
-    '0':[
-        [0,0],
-    ],
-    '1':[
-        [-1, 0],[-1, 1],[0, -1],
-        [0, 1],[1, 0],[1, 1],
-    ],
-    '2': [
-        [-2,0],[-2,-1],[-1,2],
-        [-2,1],[-1,-1],[0,2],
-        [0,-2],[1,2],[1,-1],
-        [2,0],[2,-1],[2,1],
-    ],
-    '3': [
-        [0,-3],[-2,-2],[-1,-2],
-        [1,-2],[2,-2],[-3,-1],
-        [3,-1],[-3,0],[3,0],
-        [-3,1],[3,1],[-3,2],
-        [-2,2],[2,2],[3,2],
-        [-1,3],[0,3],[1,3],
-    ],
-};
-const ODD_NEIGHBORS = {
-    '0':ISOLATED_ODD_NEIGHBORS['0'],
-    '1':ISOLATED_ODD_NEIGHBORS['0'].concat(
-        ISOLATED_ODD_NEIGHBORS['1']),
-    '2':ISOLATED_ODD_NEIGHBORS['0'].concat(
-        ISOLATED_ODD_NEIGHBORS['1'],
-        ISOLATED_ODD_NEIGHBORS['2']),
-    '3':ISOLATED_ODD_NEIGHBORS['0'].concat(
-        ISOLATED_ODD_NEIGHBORS['1'],
-        ISOLATED_ODD_NEIGHBORS['2'],
-        ISOLATED_ODD_NEIGHBORS['3']),
-}
-const ODD_STACKS = [
-    [ +0, -3 ],
-    [ +3, -1 ],
-    [ +3, +2 ],
-    [ +0, +0 ],
-    [ +0, +3 ],
-    [ -3, +2 ],
-    [ -3, -1 ],
-];
-const ISOLATED_EVEN_NEIGHBORS = {
-    '0': [
-        [0,0],
-    ],
-    '1': [
-        [-1, -1],[-1, 0],[0, -1],
-        [0, 1],[1, -1],[1, 0],
-    ],
-    '2': [
-        [-2,-1],[-2,0],[-1,-2],
-        [-2,1],[-1,1],[0,-2],
-        [1,-2],[0,2],[1,1],
-        [2,-1],[2,0],[2,1],
-    ],
-    '3': [
-        [-1,-3],[0,-3],[1,-3],
-        [-3,-2],[-2,-2],[2,-2],
-        [3,-2],[-3,-1],[3,-1],
-        [-3,0],[3,0],[-3,1],
-        [3,1],[-2,2],[-1,2],
-        [1,2],[2,2],[0,3],
-    ],
-};
-const EVEN_NEIGHBORS = {
-    '0':ISOLATED_EVEN_NEIGHBORS['0'],
-    '1':ISOLATED_EVEN_NEIGHBORS['0'].concat(
-        ISOLATED_EVEN_NEIGHBORS['1']),
-    '2':ISOLATED_EVEN_NEIGHBORS['0'].concat(
-        ISOLATED_EVEN_NEIGHBORS['1'],
-        ISOLATED_EVEN_NEIGHBORS['2']),
-    '3':ISOLATED_EVEN_NEIGHBORS['0'].concat(
-        ISOLATED_EVEN_NEIGHBORS['1'],
-        ISOLATED_EVEN_NEIGHBORS['2'],
-        ISOLATED_EVEN_NEIGHBORS['3']),
-}
-const EVEN_STACKS = [
-    [ +0, -3 ],
-    [ +3, -2 ],
-    [ +3, +1 ],
-    [ +0, +0 ],
-    [ +0, +3 ],
-    [ -3, +1 ],
-    [ -3, -2 ],
-];
-const DIRECTIONAL_NEIGHBORS = {
-    even: {
-        "NW":[-1,-1],
-        "SW":[-1,+0],
-        "NE":[+1,-1],
-        "SE":[+1,+0],
-        "N":[0,-1],
-        "S":[0,+1],
-        "CENTER":[0,0]
-    },
-    odd: {
-        "NW":[-1,+0],
-        "SW":[-1,+1],
-        "NE":[+1,+0],
-        "SE":[+1,+1],
-        "N":[0,-1],
-        "S":[0,+1],
-        "CENTER":[0,0]
-    },
-}
-
 // Caching some of the jQuery elements
 const CANVAS_ELEM = $('#hexCanvas');
 const CANVAS_CONTEXT = CANVAS_ELEM[0].getContext('2d');
 const GRID_ELEM = $('#hexGrid');
-
-// Defining hex geometry
-const HEX_RADIUS = 36; // changing this should adjust the size seamlessly
-//const HEX_RADIUS = 72; // changing this should adjust the size seamlessly
-const HEX_HEIGHT = Math.sqrt(3) * HEX_RADIUS;
-const HEX_WIDTH = 2 * HEX_RADIUS;
-const HEX_SIDE = (3/2) * HEX_RADIUS;
-const HEX_CENTER_X = HEX_WIDTH/2
-const HEX_CENTER_Y = HEX_HEIGHT/2
 
 const IMAGE_EXT = '.png';
 const TERRAIN_DIR = './terrain/'
@@ -152,8 +32,6 @@ $('input').on('change', function(){
     $displayImage = $('#showTerrainImages').is(':checked');
     drawHexGrid($currentHexGrid,20,20);
 });
-
-drawHexGrid($currentHexGrid,20,20);
 
 /* ### FUNCTIONS TO DRAW HEX GRIDS AND THEIR COMPONENTS ### */
 function drawHexGrid(gridArray, originX = 0, originY = 0) {
@@ -539,11 +417,11 @@ function unSelectHex (selectedHex) {
     $('#sel_' + selectedHex).removeClass('selection');
 }
 
-mouseoverTarget = [];
+var $mouseoverTarget = [];
 function mouseover(xy) {
     if (xy == null || xy.length == undefined) {
         return false;
-    } else if (mouseoverTarget.toString() == xy.toString()) {
+    } else if ($mouseoverTarget.toString() == xy.toString()) {
         return true;
     } else {
         unmouseover();
@@ -556,12 +434,13 @@ function mouseover(xy) {
         // DEBUG ? console.log(t) : null
         $('#sel_' + t.join('_')).addClass('mouseover');
     }
-    mouseoverTarget = xy;
+    $mouseoverTarget = xy;
 }
 
 function unmouseover() {
     allSelectionLayer.removeClass('mouseover');
 }
 
-
+// Execute code here:
+drawHexGrid($currentHexGrid,20,20);  
 });
