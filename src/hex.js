@@ -442,5 +442,6 @@ function unmouseover() {
 }
 
 // Execute code here:
-drawHexGrid($currentHexGrid,20,20);  
+drawHexGrid($currentHexGrid,20,20);
+    
 });

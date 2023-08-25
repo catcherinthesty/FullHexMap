@@ -4,14 +4,6 @@
   box-sizing: border-box;
 }
 
-.selected {
-    opacity: 0.5;
-}
-
-body {
-    /* Custom CSS for body */
-}
-
 .imageButton {
     width: 72px;
     height: 72px;
@@ -25,7 +17,6 @@ body {
     filter: sepia(0.80);
 }
 
-
 .hex {
     position: absolute;
     z-index: 5;
@@ -36,31 +27,6 @@ body {
     z-index: 7;
     pointer-events: none;
     opacity: 0%;
-}
-
-.hexBorder {
-    user-select: none;
-    pointer-events: none;
-    position: absolute;
-    width: 72px;
-    height: 72px;
-    z-index: 10;
-    border: 0px;
-    /*mix-blend-mode: multiply;*/
-}
-
-.hexFullBorder {
-    user-select: none;
-    pointer-events: none;
-    position: absolute;
-    width: 72px;
-    height: 72px;
-    z-index: 9;
-    border: 0px;
-}
-
-.container {
-    position: relative;
 }
 
 .toggle-button-wrapper {
@@ -99,23 +65,6 @@ body {
     font-size: 24px;
 }
 
-.hex-container {
-    position: relative;
-}
-
-.hexCoordinateOverlay {
-    user-select: none;
-    pointer-events: none;
-    position: absolute;
-    text-align: center;
-    left: 24px;
-    top: 56px;
-    font-size: 10px;
-    color: #000; /* Black text */
-    text-shadow: 0px 0px 0 #000, 1px 0px 0 #000, 0px 0px 0 #000, 1px 1px 0 #000; /* White outline */
-    z-index: 100;
-}
-
 #hexCanvas {
     position:absolute;
 }
@@ -131,7 +80,3 @@ body {
 .passthrough {
     pointer-events: none;
 }
-
-/*#sidebar {
-    z-index: 200;
-}*/
